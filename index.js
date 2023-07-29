@@ -1,7 +1,19 @@
 const express = require("express")
 const app = express()
 
-app.get("/", (req, res) => {
+app.get("/products", (req, res) => {
+    res.send("hellow world")
+})
+
+app.get("/products/:id", (req, res) => {
+    res.send("hellow world")
+})
+
+app.get("/users", (req, res) => {
+    res.send("hellow world")
+})
+
+app.get("/users/:id", (req, res) => {
     res.send("hellow world")
 })
 
