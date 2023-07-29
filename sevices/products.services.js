@@ -1,27 +1,30 @@
-
+const boom = require('@hapi/boom')
 class ProductsService {
 
     constructor(){
         this.products =[{
             name:"camisa",
             price: 1200,
-            id:1
+            id:1,
+            img: "url"
         },
         {
             name:"pantalon",
             price: 1000,
-            id:2
+            id:2,
+            img: "url"
         },
         {
             name:"camisa azul",
             price: 1000,
-            id:3
+            id:3,
+            img: "url"
         }
     ]
     }
     
     create({body}){
-        const {name, price} = body
+        const {name, price, img} = body
 
         const allId = this.products.map( product =>  product.id)
 
@@ -29,7 +32,8 @@ class ProductsService {
         const newProduct ={
             id: maxId + 1,
             name,
-            price
+            price, 
+            img
         }
 
         this.products.push(newProduct)
@@ -43,11 +47,32 @@ class ProductsService {
 
     findOne({id}){
         const product = this.products.find(product => product.id === id)
+
+        if(!product){
+            throw boom.notFound('product not found')
+        }
+
         return product
     }
 
-    upDate(){
+    async upDate({id, change}){
 
+        const index = this.products.findIndex( product => product.id === id)
+
+        if(index === -1){
+            throw boom.notFound('product not found')
+        }
+
+        const product = this.products[index]
+
+        this.products[index] = {
+            ...product,
+            ...change
+        }
+
+      
+
+        return this.products[index]
     }
 
     datele({id}){
